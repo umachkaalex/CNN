@@ -225,7 +225,7 @@ def model(datasets, model_params):
             if print_cost == True and epoch % 1 == 0:
                 costs.append(minibatch_cost)
         if print_cost == True:
-            plt.plot(np.squeeze(costs[model_params['skip_steps']:]))
+            plt.plot(np.squeeze(costs[model_params['plot_from_epoch']:]))
             plt.ylabel('cost')
             plt.xlabel('iterations (per tens)')
             plt.title("Learning rate =" + str(learning_rate))
@@ -239,32 +239,38 @@ def model(datasets, model_params):
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
         images = X_train.shape[0]
         train_accuracies = []
-        ts_btch = model_params['accuracy_batch']
-        for loop in range(1, int(images/ts_btch)):
-            if loop != int(images/ts_btch)-1:
-                batch_X = X_train[(loop - 1)*ts_btch:loop*ts_btch, :, :, :]
-                batch_Y = Y_train[(loop - 1) * ts_btch:loop * ts_btch, :]
-                train_accuracy = accuracy.eval({X: batch_X, Y: batch_Y})
-                train_accuracies.append(train_accuracy)
-            else:
-                batch_X = X_train[(loop - 1) * ts_btch:, :, :, :]
-                batch_Y = Y_train[(loop - 1) * ts_btch:, :]
-                train_accuracy = accuracy.eval({X: batch_X, Y: batch_Y})
-                train_accuracies.append(train_accuracy)
-
-        images = X_test.shape[0]
         test_accuracies = []
-        for loop in range(1, int(images / ts_btch)):
-            if loop != int(images / ts_btch) - 1:
-                batch_X = X_test[(loop - 1) * ts_btch:loop * ts_btch, :, :, :]
-                batch_Y = Y_test[(loop - 1) * ts_btch:loop * ts_btch, :]
-                test_accuracy = accuracy.eval({X: batch_X, Y: batch_Y})
-                test_accuracies.append(test_accuracy)
-            else:
-                batch_X = X_test[(loop - 1) * ts_btch:, :, :, :]
-                batch_Y = Y_test[(loop - 1) * ts_btch:, :]
-                test_accuracy = accuracy.eval({X: batch_X, Y: batch_Y})
-                test_accuracies.append(test_accuracy)
+        ts_btch = model_params['accuracy_batch']
+        if ts_btch == 0:
+            train_accuracy = accuracy.eval({X: X_train, Y: Y_train})
+            train_accuracies.append(train_accuracy)
+            test_accuracy = accuracy.eval({X: X_test, Y: X_train})
+            test_accuracies.append(test_accuracy)
+        else:
+            for loop in range(1, int(images/ts_btch)):
+                if loop != int(images/ts_btch)-1:
+                    batch_X = X_train[(loop - 1)*ts_btch:loop*ts_btch, :, :, :]
+                    batch_Y = Y_train[(loop - 1) * ts_btch:loop * ts_btch, :]
+                    train_accuracy = accuracy.eval({X: batch_X, Y: batch_Y})
+                    train_accuracies.append(train_accuracy)
+                else:
+                    batch_X = X_train[(loop - 1) * ts_btch:, :, :, :]
+                    batch_Y = Y_train[(loop - 1) * ts_btch:, :]
+                    train_accuracy = accuracy.eval({X: batch_X, Y: batch_Y})
+                    train_accuracies.append(train_accuracy)
+
+            images = X_test.shape[0]
+            for loop in range(1, int(images / ts_btch)):
+                if loop != int(images / ts_btch) - 1:
+                    batch_X = X_test[(loop - 1) * ts_btch:loop * ts_btch, :, :, :]
+                    batch_Y = Y_test[(loop - 1) * ts_btch:loop * ts_btch, :]
+                    test_accuracy = accuracy.eval({X: batch_X, Y: batch_Y})
+                    test_accuracies.append(test_accuracy)
+                else:
+                    batch_X = X_test[(loop - 1) * ts_btch:, :, :, :]
+                    batch_Y = Y_test[(loop - 1) * ts_btch:, :]
+                    test_accuracy = accuracy.eval({X: batch_X, Y: batch_Y})
+                    test_accuracies.append(test_accuracy)
 
     return train_accuracies, test_accuracies, parameters
 
