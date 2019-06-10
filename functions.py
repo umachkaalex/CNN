@@ -153,7 +153,6 @@ def forward_propagation(X, parameters, model_params, n_y):
 
 def compute_cost(Z3, Y):
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=Z3, labels=Y))
-    # cost = tf.nn.sigmoid(Z3)
     return cost
 
 def random_mini_batches(X, Y, model_params):
@@ -162,10 +161,8 @@ def random_mini_batches(X, Y, model_params):
     m = X.shape[0]  # number of training examples
     mini_batches = []
 
-    # Step 1: Shuffle (X, Y)
     permutation = list(np.random.permutation(m))
 
-    # Step 2: Partition (shuffled_X, shuffled_Y). Minus the end case.
     num_complete_minibatches = math.floor(
         m / mini_batch_size)  # number of mini batches of size mini_batch_size in your partitionning
     for k in range(0, num_complete_minibatches):
@@ -174,7 +171,6 @@ def random_mini_batches(X, Y, model_params):
         mini_batch = (mini_batch_X, mini_batch_Y)
         mini_batches.append(mini_batch)
 
-    # Handling the end case (last mini-batch < mini_batch_size)
     if m % mini_batch_size != 0:
         mini_batch_X = X[permutation[num_complete_minibatches * mini_batch_size:]]
         mini_batch_Y = Y[permutation[num_complete_minibatches * mini_batch_size:]]
@@ -211,7 +207,7 @@ def model(datasets, model_params):
         sess.run(init)
         for epoch in range(num_epochs):
             minibatch_cost = 0.
-            num_minibatches = int(m / minibatch_size)  # number of minibatches of size minibatch_size in the train set
+            num_minibatches = int(m / minibatch_size)
             minibatches = random_mini_batches(X_train, Y_train, model_params)
 
             for minibatch in minibatches:
@@ -231,11 +227,9 @@ def model(datasets, model_params):
             plt.title("Learning rate =" + str(learning_rate))
             plt.show()
 
-        # Calculate the correct predictions
         predict_op = tf.argmax(Z3, 1)
         correct_prediction = tf.equal(predict_op, tf.argmax(Y, 1))
 
-        # Calculate accuracy on the test set
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
         images = X_train.shape[0]
         train_accuracies = []
