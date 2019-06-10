@@ -1,17 +1,17 @@
 ******************Setup******************
 
 1. Install requirements
-2. Unzip numbers.rar in img_data
+2. Unzip numbers.rar in 'img_data' folder
 3. Run CNN_model.ipynb
 
 ******************Adding your images******************
 
 If you want to use your images:
-1. Add it to img_data folder in one folder (for example, "cats_dogs")
-2. The structure of the subfolders have to be following:
-   - '...\cats_dogs\train\' path for train images
-   - '...\cats_dogs\test\' path for test images
-3. Inside test and train folder have to be the same number of folder (it will be the classes):
+1. Put them into 'img_data' folder as one folder (for example, "cats_dogs")
+2. The structure of the subfolders have to be the following:
+   - '...\cats_dogs\train\' path for train images,
+   - '...\cats_dogs\test\' path for test images.
+3. Inside test and train folder have to be the same number of folders (thet will be defined as classes):
    - '...\cats_dogs\train\dogs\' path for train images of dogs
    - '...\cats_dogs\train\cats\' path for train images of cats
 
