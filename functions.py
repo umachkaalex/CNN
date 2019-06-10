@@ -198,6 +198,8 @@ def model(datasets, model_params):
 
     X, Y = create_placeholders(n_H0, n_W0, n_C0, n_y)
     parameters = initialize_parameters(model_params)
+    if model_params['save_weights']:
+        saver = tf.train.Saver(parameters)
     Z3 = forward_propagation(X, parameters, model_params, n_y)
     cost = compute_cost(Z3, Y)
     optimizer = tf.train.AdamOptimizer(learning_rate).minimize(cost)
@@ -226,6 +228,9 @@ def model(datasets, model_params):
             plt.xlabel('iterations (per tens)')
             plt.title("Learning rate =" + str(learning_rate))
             plt.show()
+
+        if model_params['save_weights']:
+            saver.save(sess, './saved-models/my-model')
 
         predict_op = tf.argmax(Z3, 1)
         correct_prediction = tf.equal(predict_op, tf.argmax(Y, 1))
