@@ -14,7 +14,7 @@ fldr = 'D:/Deep_Learning/MyProjects/CNN_Stocks/img_data/numbers/'
 dataset = PrepareData(fldr).run()
 
 model_params = dict({'learning_rate': 0.005,
-                     'num_epochs': 20,
+                     'num_epochs': 100,
                      'minibatch_size': 256,
                      'accuracy_batch': 100,
                      'print_cost': True,
