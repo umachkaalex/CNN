@@ -1,6 +1,7 @@
 ******************Setup******************
 
-1. Install requirements
+1. Rename suitable file to requirments.txt and install requirements.
+   (_oldGPU.txt, for NVIDIA cards with compute capability <=3.0.)
 2. Unzip numbers.rar in img_data
 3. Run CNN_model.ipynb
 
