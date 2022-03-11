@@ -28,7 +28,7 @@ numpy==1.16.4
 pandas==0.24.1
 pandocfilters==1.4.2
 pickleshare==0.7.5
-Pillow==6.0.0
+Pillow==9.0.1
 prometheus-client==0.6.0
 prompt-toolkit==1.0.15
 Pygments==2.3.1
